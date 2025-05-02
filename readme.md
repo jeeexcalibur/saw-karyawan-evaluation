@@ -1,6 +1,6 @@
 # 📊 Sistem Pendukung Keputusan Metode SAW - Penilaian Kinerja Karyawan
 
-Sistem berbasis web untuk membantu pengambilan keputusan menggunakan metode *Simple Additive Weighting (SAW)* dalam menilai performa karyawan. Sistem ini dirancang dengan antarmuka modern, responsif, dan mendukung input manual maupun otomatis (import Excel).
+Sistem berbasis web untuk membantu pengambilan keputusan menggunakan metode *Simple Additive Weighting (SAW)* dalam menilai performa karyawan. Sistem ini dirancang dengan antarmuka modern, responsif.
 
 ---
 
