@@ -60,6 +60,6 @@ npm run dev
 ```
 
 --- 
-This project is licensed created by 2025 Jein Ananda, Institut Teknologi Kalimantan.
+This project is created by 2025 Jein Ananda, Institut Teknologi Kalimantan.
 You are free to use, modify, and distribute this software for educational or commercial purposes with proper attribution.
 
