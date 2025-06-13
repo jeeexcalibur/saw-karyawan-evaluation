@@ -7,7 +7,35 @@ penilaian_bp = Blueprint('penilaian_bp', __name__)
 
 # CREATE/UPDATE Penilaian untuk 1 alternatif dan 1 kriteria
 @penilaian_bp.route('/', methods=['POST'])
+@penilaian_bp.route('/', methods=['POST'])
 def simpan_penilaian():
+    data = request.get_json()
+    alt_id = data['alternatif_id']
+    krt_id = data['kriteria_id']
+    nilai_input = data['nilai_input']
+
+    # Langsung konversi nilai_input ke float
+    try:
+        nilai_angka = float(nilai_input)
+    except ValueError:
+        return jsonify({'error': 'Nilai input tidak valid'}), 400
+
+    # Simpan atau update penilaian
+    existing = Penilaian.query.filter_by(alternatif_id=alt_id, kriteria_id=krt_id).first()
+    if existing:
+        existing.nilai_input = nilai_input
+        existing.nilai_angka = nilai_angka
+    else:
+        p = Penilaian(
+            alternatif_id=alt_id,
+            kriteria_id=krt_id,
+            nilai_input=nilai_input,
+            nilai_angka=nilai_angka
+        )
+        db.session.add(p)
+    db.session.commit()
+    return jsonify({'message': 'Penilaian berhasil disimpan'}), 200
+
     data = request.get_json()
     alt_id = data['alternatif_id']
     krt_id = data['kriteria_id']

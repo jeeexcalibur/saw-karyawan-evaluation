@@ -40,32 +40,34 @@ export default function Alternatif() {
     return found ? found.id : null;
   };
 
-  const handleTambah = async (e) => {
-    e.preventDefault();
+const handleTambah = async (e) => {
+  e.preventDefault();
 
-    const res = await axios.post('http://localhost:5000/api/alternatif/', {
-      nama: formNamaBaru
+  const res = await axios.post('http://localhost:5000/api/alternatif/', {
+    nama: formNamaBaru
+  });
+
+  const alternatifId = res.data.id;
+
+  const promises = Object.entries(formCrips).map(([krtId, cripsId]) => {
+    const crips = cripsList.find(c => c.id === parseInt(cripsId));
+    if (!crips) return null;
+
+    // Kirim langsung nilai angka biar backend ga parsing string
+    return axios.post('http://localhost:5000/api/penilaian/', {
+      alternatif_id: alternatifId,
+      kriteria_id: parseInt(krtId),
+      nilai_input: crips.nilai.toString()
     });
+  }).filter(Boolean);
 
-    const alternatifId = res.data.id;
+  await Promise.all(promises);
 
-    const promises = Object.entries(formCrips).map(([krtId, cripsId]) => {
-      const crips = cripsList.find(c => c.id === parseInt(cripsId));
-      if (!crips) return null;
+  setFormNamaBaru('');
+  setFormCrips({});
+  fetchData();
+};
 
-      return axios.post('http://localhost:5000/api/penilaian/', {
-        alternatif_id: alternatifId,
-        kriteria_id: parseInt(krtId),
-        nilai_input: crips.deskripsi || crips.min_value
-      });
-    }).filter(Boolean);
-
-    await Promise.all(promises);
-
-    setFormNamaBaru('');
-    setFormCrips({});
-    fetchData();
-  };
 
   const handleDelete = (id) => {
     axios.delete(`http://localhost:5000/api/alternatif/${id}`).then(fetchData);
